@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,6 +15,6 @@ async def create_category(category_in: CategoryCreate, db: AsyncSession = Depend
     return await create_category_service(db, category_in)
 
 
-@router.get("/", response_model=list[CategoryRead])
-async def list_categories(db: AsyncSession = Depends(get_db)) -> list[CategoryRead]:
+@router.get("/", response_model=List[CategoryRead])
+async def list_categories(db: AsyncSession = Depends(get_db)) -> List[CategoryRead]:
     return await list_categories_service(db)

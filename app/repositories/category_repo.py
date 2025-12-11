@@ -1,3 +1,5 @@
+from typing import List, Optional
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -5,12 +7,12 @@ from app.models.category import Category
 from app.schemas.category import CategoryCreate
 
 
-async def get_category_by_name(db: AsyncSession, name: str) -> Category | None:
+async def get_category_by_name(db: AsyncSession, name: str) -> Optional[Category]:
     result = await db.execute(select(Category).where(Category.name == name))
     return result.scalar_one_or_none()
 
 
-async def get_all_categories(db: AsyncSession) -> list[Category]:
+async def get_all_categories(db: AsyncSession) -> List[Category]:
     result = await db.execute(select(Category))
     return list(result.scalars().all())
 

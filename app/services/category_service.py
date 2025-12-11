@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -17,6 +19,6 @@ async def create_category_service(db: AsyncSession, category_in: CategoryCreate)
     return CategoryRead.model_validate(category)
 
 
-async def list_categories_service(db: AsyncSession) -> list[CategoryRead]:
+async def list_categories_service(db: AsyncSession) -> List[CategoryRead]:
     categories = await get_all_categories(db)
     return [CategoryRead.model_validate(cat) for cat in categories]
