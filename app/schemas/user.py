@@ -1,4 +1,9 @@
+from typing import Literal
+
 from pydantic import BaseModel, EmailStr
+
+
+UserRole = Literal["admin", "seller", "customer"]
 
 
 class UserBase(BaseModel):
@@ -17,6 +22,7 @@ class UserSignin(BaseModel):
 
 class UserRead(UserBase):
     id: int
+    role: UserRole
     is_active: bool
 
     class Config:
@@ -26,3 +32,13 @@ class UserRead(UserBase):
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+
+class UserRoleUpdate(BaseModel):
+    role: UserRole
+
+
+class UserRoleAssign(BaseModel):
+    name: str
+    email: EmailStr
+    role: UserRole

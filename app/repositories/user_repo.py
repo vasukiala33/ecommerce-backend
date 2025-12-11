@@ -11,8 +11,21 @@ async def get_user_by_email(db: AsyncSession, email: str) -> Optional[User]:
     return result.scalar_one_or_none()
 
 
-async def create_user(db: AsyncSession, *, name: str, email: str, hashed_password: str) -> User:
-    user = User(name=name, email=email, hashed_password=hashed_password)
+async def get_user_by_id(db: AsyncSession, user_id: int) -> Optional[User]:
+    result = await db.execute(select(User).where(User.id == user_id))
+    return result.scalar_one_or_none()
+
+
+async def create_user(db: AsyncSession, *, name: str, email: str, hashed_password: str, role: str = "customer") -> User:
+    user = User(name=name, email=email, hashed_password=hashed_password, role=role)
+    db.add(user)
+    await db.commit()
+    await db.refresh(user)
+    return user
+
+
+async def update_user_role(db: AsyncSession, user: User, role: str) -> User:
+    user.role = role
     db.add(user)
     await db.commit()
     await db.refresh(user)
