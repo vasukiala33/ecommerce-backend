@@ -11,7 +11,6 @@ class ProductBase(BaseModel):
 
 
 class ProductCreate(ProductBase):
-    seller_id: int
     category_id: int
 
 
