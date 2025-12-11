@@ -20,3 +20,19 @@ class Product(Base):
 
     seller = relationship("User", backref="products")
     category = relationship("Category", backref="products")
+    images = relationship(
+        "ProductImage",
+        back_populates="product",
+        cascade="all, delete-orphan",
+    )
+
+
+class ProductImage(Base):
+    __tablename__ = "product_images"
+
+    id = mapped_column(Integer, primary_key=True, index=True)
+    product_id = mapped_column(ForeignKey("products.id", ondelete="CASCADE"), nullable=False, index=True)
+    image_url = mapped_column(String(length=512), nullable=False)
+    created_at = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+    product = relationship("Product", back_populates="images")

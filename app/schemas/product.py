@@ -14,11 +14,21 @@ class ProductCreate(ProductBase):
     category_id: int
 
 
+class ProductImageRead(BaseModel):
+    id: int
+    image_url: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
 class ProductRead(ProductBase):
     id: int
     seller_id: int
     category_id: int
     created_at: datetime
+    images: list[ProductImageRead] = []
 
     class Config:
         from_attributes = True
