@@ -33,7 +33,7 @@ async def signin(db: AsyncSession, credentials: UserSignin) -> Token:
         )
 
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(subject=user.id, expires_delta=access_token_expires)
+    access_token = create_access_token(subject=user.id, role=user.role, expires_delta=access_token_expires)
     return Token(access_token=access_token)
 
 

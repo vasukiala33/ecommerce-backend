@@ -11,12 +11,14 @@ from app.core.config import settings
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 
-def create_access_token(subject: str | Any, expires_delta: Optional[timedelta] = None) -> str:
+def create_access_token(subject: str | Any, *, role: str | None = None, expires_delta: Optional[timedelta] = None) -> str:
     if expires_delta is None:
         expires_delta = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
     expire = datetime.utcnow() + expires_delta
-    to_encode = {"sub": str(subject), "exp": expire}
+    to_encode: dict[str, Any] = {"sub": str(subject), "exp": expire}
+    if role is not None:
+        to_encode["role"] = role
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
 
