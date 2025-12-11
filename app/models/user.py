@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import mapped_column
 
 from app.db.session import Base
 
@@ -9,10 +9,10 @@ from app.db.session import Base
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    name: Mapped[str] = mapped_column(String(length=255), nullable=False)
-    email: Mapped[str] = mapped_column(String(length=255), unique=True, index=True, nullable=False)
-    hashed_password: Mapped[str] = mapped_column(String(length=255), nullable=False)
-    role: Mapped[str] = mapped_column(String(length=50), default="customer", nullable=False)
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    id = mapped_column(Integer, primary_key=True, index=True)
+    name = mapped_column(String(length=255), nullable=False)
+    email = mapped_column(String(length=255), unique=True, index=True, nullable=False)
+    hashed_password = mapped_column(String(length=255), nullable=False)
+    role = mapped_column(String(length=50), default="customer", nullable=False)
+    is_active = mapped_column(Boolean, default=True, nullable=False)
+    created_at = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
