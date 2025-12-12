@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.repositories.product_repo import add_product_images, create_product
+from app.repositories.product_repo import add_product_images, create_product, get_products_by_category
 from app.schemas.product import ProductCreate, ProductRead
 
 
@@ -14,3 +14,12 @@ async def create_seller_product(
     product = await create_product(db, seller_id=seller_id, product_in=product_in)
     product = await add_product_images(db, product=product, image_urls=image_urls)
     return ProductRead.model_validate(product)
+
+
+async def list_products_by_category(
+    db: AsyncSession,
+    *,
+    category_id: int,
+) -> list[ProductRead]:
+    products = await get_products_by_category(db, category_id=category_id)
+    return [ProductRead.model_validate(p) for p in products]
